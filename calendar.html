@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>萬年曆</title>
+  <link rel='stylesheet'
+    href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/css/bootstrap.min.css'
+  />
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="app">
+    <div class="container">
+      <div class="calendar-body">
+        <h1>
+          {{ calendar.year }} 年 
+          {{ calendar.month + 1 }} 月
+        </h1>
+        <div class="btn-group">
+          <button class="calendar-btn" @click="controlYear(-1)"> &laquo; </button>
+          <button 
+            class="calendar-btn btn-prev" 
+            @click="controlMonth(-1)"> &lt; </button>
+          <button class="calendar-btn" @click="setToday">
+            {{ calendar.year }} / 
+            {{ calendar.month + 1 }} / 
+            {{ calendar.date }}</button>
+          <button 
+            class="calendar-btn btn-next"
+            @click="controlMonth(1)"> &gt; </button>
+            <button class="calendar-btn" @click="controlYear(1)"> &raquo; </button>
+        </div>
+      </div>
+      <div class="calendar">
+        <div class="week-day" >
+          <div 
+            v-for=" item of weekList" 
+            :key="item"
+          >{{ item }}</div>
+        </div>
+        <div class="week" v-for="i in 6">
+          <div
+            class="day"
+            v-for="j in 7"
+            :data-date="calendarMonth[(i-1)*7+j-1].date"
+            :class="{ today: calendarMonth[(i-1)*7+j-1].year === today.year && 
+              calendarMonth[(i-1)*7+j-1].month === today.month &&
+              calendarMonth[(i-1)*7+j-1].date === today.date,
+              other: calendarMonth[(i-1)*7+j-1].month !== calendar.month
+            }">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script 
+    src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.9/vue.min.js'></script>
+  <script>
+    (function(Vue) {
+      new Vue({
+        el: '#app',
+        data() {
+          return {
+            today: {
+              year: 0,
+              month: 0,
+              date: 0,
+              day: 0,
+            },
+            calendar: {
+              year: 0,
+              month: 0,
+              date: 0,
+              day: 0,
+            },
+            weekList:[
+              '日',
+              '一',
+              '二',
+              '三',
+              '四',
+              '五',
+              '六',
+            ]
+          }
+        },
+        mounted() {
+          this.setToday()
+        },
+        methods: {
+          setToday() {
+            const date = new Date();
+            this.today.year = this.calendar.year = date.getFullYear();
+            this.today.month = this.calendar.month = date.getMonth();
+            this.today.date = this.calendar.date = date.getDate();
+            this.today.day = this.calendar.day = date.getDay();
+          },
+          controlYear(y) {
+            this.calendar.year += y;
+          },
+          controlMonth(m) {
+            let month = this.calendar.month + m;
+            if(month > 11) {
+              this.controlYear(1);
+              this.calendar.month = 0;
+            } else if(month < 0) {
+              this.controlYear(-1);
+              this.calendar.month = 11;
+            } else {
+              this.calendar.month = month;
+            }
+          }
+        },
+        computed: {
+          calendarFirstDay() {
+            const mDate = new Date(this.calendar.year, this.calendar.month, 1)
+            const date = new Date(
+              this.calendar.year,
+              this.calendar.month,
+              1 - mDate.getDay())
+            return {
+              year: date.getFullYear(),
+              month: date.getMonth(),
+              date: date.getDate(),
+              day: date.getDay()
+            }
+          },
+          calendarMonth() {
+            const data = []
+            let date
+            for(let i = 0; i < 42; i++) {
+              date = new Date(
+                this.calendarFirstDay.year,
+                this.calendarFirstDay.month,
+                this.calendarFirstDay.date + i
+              )
+              data.push({
+                year: date.getFullYear(),
+                month: date.getMonth(),
+                date: date.getDate(),
+                day: date.getDay()
+              })
+            }
+            return data
+          }
+        }
+      })
+    })(Vue)
+  </script>
+</body>
+</html>

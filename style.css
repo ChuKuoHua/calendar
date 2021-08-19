@@ -1,0 +1,89 @@
+[v-cloak]{
+  display: none;
+}
+html,body{
+  height: 100%;
+}
+html{
+  text-align: center;
+}
+body {
+  background: #f9d8d2;
+}
+#app {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.container {
+  box-shadow: 1px 1px 8px #e0dddd;
+  border-radius: 5px;
+  background: #fff;
+}
+.calendar-body {
+  position: relative;
+  padding: 10px;
+  border-bottom: 2px solid #efefef;
+}
+.calendar-btn {
+  border-radius: 20px;
+  padding: 3px 10px;
+  border: 0;
+  background: transparent;
+}
+.calendar-btn:hover {
+  color: #fcfafa;
+  background: #58b7a5b5;
+}
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+}
+.btn-group > button {
+  margin: 0 5px;
+}
+.calendar {
+  margin: 1rem 0;
+}
+.week-day,
+.week {
+  display: flex;
+  border-bottom:  1px solid #eee;
+}
+.week-day > div {
+  flex: 1 1 0%;
+  line-height: 30px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.week {
+  border-right: 1px solid #eee;
+}
+.week > div {
+  position: relative;
+  flex: 1 1 0%;
+  height: 90px;
+  line-height: 30px;
+  color: #464040;
+  border-left: 1px solid #eee;
+}
+.week > div:hover {
+  color: #f4fffe;
+  box-shadow: 0px 0px 60px inset rgb(88 183 165)
+}
+.week > div::before{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  text-align: center;
+  content: attr(data-date);
+}
+.today::before {
+  color: #f7f4f3;
+  background: #4eb9a5;
+}
+.week > .other {
+  color: #bbb;
+}
